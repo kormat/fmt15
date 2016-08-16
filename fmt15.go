@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	DefTimeFmt         = "2006-01-02T15:04:05.999-0700"
+	DefTimeFmt         = "2006-01-02T15:04:05.000-0700"
 	DefFloatFmt        = 'f'
 	DefTermMsgJust     = 40
 	DefMultilinePrefix = ">  "
