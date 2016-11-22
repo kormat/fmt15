@@ -44,7 +44,12 @@ func Fmt15Format(colorMap map[log15.Lvl]int) log15.Format {
 		}
 		buf := &bytes.Buffer{}
 		Fmt15(buf, r, color)
-		return buf.Bytes()
+		raw := buf.Bytes()
+		if raw[len(raw)-1] != '\n' {
+			// Add a trailing newline, if the output doesn't already have one.
+			raw = append(raw, '\n')
+		}
+		return raw
 	})
 }
 
@@ -60,7 +65,6 @@ func Fmt15(buf *bytes.Buffer, r *log15.Record, color int) {
 		}
 		fmt.Fprintf(buf, " %v=%v", ColorStr(k, color), v)
 	}
-	buf.WriteByte('\n')
 }
 
 func FmtValue(val interface{}) string {
@@ -94,7 +98,9 @@ func FmtMultiLine(s string) string {
 	lines := strings.Split(s, "\n")
 	buf.WriteByte('\n')
 	for i, line := range lines {
-		if i == len(lines)-1 && line == "" {
+		if i == len(lines)-1 && strings.HasSuffix(s, "\n") {
+			// Don't output an empty line if caused by a trailing newline in
+			// the input.
 			break
 		}
 		fmt.Fprintf(&buf, "%v%v\n", MultilinePrefix, line)
