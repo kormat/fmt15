@@ -84,7 +84,7 @@ func FmtValue(val interface{}) string {
 	switch {
 	case strings.ContainsRune(s, '\n'):
 		return FmtMultiLine(s)
-	case strings.ContainsAny(s, " \\n"):
+	case strings.ContainsAny(s, " \\"):
 		return fmt.Sprintf("\"%v\"", s)
 	case s == "":
 		return "\"\""
